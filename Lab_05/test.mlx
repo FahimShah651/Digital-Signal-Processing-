@@ -1,0 +1,45 @@
+% Define the time vector for the signal
+t = 0:1/8000:1;  % Assuming a duration of 1 second
+
+% Define the signal F
+F = 2*cos(2*pi*15*t) + 5*cos(2*pi*40*t) + 7*cos(2*pi*70*t);
+
+% Compute the Fast Fourier Transform (FFT) of the signal F
+nfft = 1024;
+FFT_F = fft(F, nfft);
+
+% Extract the first half of FFT_F for positive frequencies
+FFT_F = FFT_F(1:nfft/2+1);
+
+% Calculate the magnitude of the FFT
+mag_FFT_F = abs(FFT_F);
+
+% Calculate the phase of the FFT
+phase_FFT_F = angle(FFT_F);
+
+% Frequency vector for plotting
+f = (0:nfft/2)*8000/nfft;
+
+% Plot the magnitude spectrum of the signal F
+figure;
+stem(f, mag_FFT_F);
+title('Magnitude Spectrum of Signal F');
+xlabel('Frequency (Hz)');
+ylabel('Magnitude');
+
+% Plot the phase spectrum of the signal F
+figure;
+stem(f, phase_FFT_F);
+title('Phase Spectrum of Signal F');
+xlabel('Frequency (Hz)');
+ylabel('Phase (Radians)');
+
+% Convert the frequency domain signal back to the time domain using the inverse Fourier transform
+IFT_F = ifft(FFT_F);
+
+% Plot the time domain signal
+figure;
+plot(t, real(IFT_F));
+title('Time Domain Signal F');
+xlabel('Time (seconds)');
+ylabel('Amplitude');
